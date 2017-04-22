@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~   Copyright 2016, donlan(梁桂栋)
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  ~
+  ~   Email me: stonelavender@hotmail.com
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="dong.lan.mapfun.activity.CreateFeedActivity">
+
+    <EditText
+        android:id="@+id/new_feed_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="start"
+        android:hint="@string/publish_feed_hint"
+        android:padding="12dp" />
+
+    <dong.lan.base.ui.customView.TagCloudView
+        android:id="@+id/label_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:layout_margin="10dp"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/feed_images_list"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <TextView
+        android:id="@+id/publish_feed_loc_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:drawableLeft="@drawable/ic_pin_drop"
+        android:padding="4dp"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/publish_feed_pick_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/new_feed_tab_margin"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_insert_photo" />
+
+        <ImageButton
+            android:id="@+id/publish_feed_pick_loc"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/new_feed_tab_margin"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_pin_drop" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/publish_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send"
+            android:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/publish_feed_label"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/new_feed_tab_margin"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_local_offer" />
+
+        <ImageButton
+            android:id="@+id/publish_feed_visitable"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/new_feed_tab_margin"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/eye_check_bg" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~   Copyright 2016, donlan(梁桂栋)
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  ~
+  ~   Email me: stonelavender@hotmail.com
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="dong.lan.mapfun.activity.ChatActivity">
+
+    <include layout="@layout/action_bar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/chatRefresher"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chatList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <LinearLayout
+        android:id="@+id/chat_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:padding="5dp">
+
+
+         <ImageButton
+             android:id="@+id/chat_panel_toggle"
+             android:paddingLeft="@dimen/dp_10"
+             android:paddingRight="@dimen/dp_10"
+             android:background="@null"
+             android:src="@drawable/ic_widgets"
+             android:layout_width="wrap_content"
+             android:layout_height="40dp" />
+
+        <EditText
+            android:id="@+id/chat_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/chat_input_bg"
+            android:maxLines="5"
+            android:minHeight="40dp" />
+
+        <Button
+            android:id="@+id/chat_send"
+            android:layout_width="55dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:text="@string/send"
+            android:textColor="@color/main_text_color"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/chat_tool_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+
+        <dong.lan.library.LabelTextView
+            android:id="@+id/chat_action_guide"
+            android:layout_margin="12dp"
+            android:background="@null"
+            app:radius="40dp"
+            android:paddingTop="12dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="定位导航"
+            android:drawableTop="@drawable/ic_pin_drop_white"
+            app:bg_color="@color/menu_bar_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
+</LinearLayout>

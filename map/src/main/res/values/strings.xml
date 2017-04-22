@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Map</string>
+    <string name="country_city">城市</string>
+    <string name="location_pick_hint_text">手动输入地址</string>
+</resources>

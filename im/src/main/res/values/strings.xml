@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">JMessageDemo</string>
+    <string name="getUserName">getUserName: %1$s</string>
+    <string name="getAddress">getAddress: %1$s</string>
+    <string name="getAppKey">getAppKey: %1$s</string>
+    <string name="getAvatarFile">getAvatarFile: %1$s</string>
+    <string name="getBirthday">getBirthday: %1$s</string>
+    <string name="getBlacklist">getBlacklist: %1$s</string>
+    <string name="getGender">getGender: %1$s</string>
+    <string name="getNickname">getNickname: %1$s</string>
+    <string name="getNotename">getNotename: %1$s</string>
+    <string name="getNoteText">getNoteText: %1$s</string>
+    <string name="getRegion">getRegion: %1$s</string>
+    <string name="getStar">getStar: %1$s</string>
+    <string name="getUserID">getUserID: %1$s</string>
+    <string name="getSignature">getSignature: %1$s</string>
+</resources>
+

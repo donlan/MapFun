@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="menu_bar_icon">#ff333333</color>
+    <color name="logout_color">#ee333333</color>
+</resources>

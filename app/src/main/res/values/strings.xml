@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">图趣</string>
+    <string name="enter">开启图趣</string>
+    <string name="login_password">密码</string>
+    <string name="login_username">用户名</string>
+    <string name="login_need_register">注册用户</string>
+    <string name="login_label_text">欢迎来到图趣的世界</string>
+    <string name="register">注册用户</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="publish_feed_hint">写写你的有趣...</string>
+    <string name="logout">登出</string>
+    <string name="favorite">收藏</string>
+    <string name="friends">趣友</string>
+    <string name="setting">设置</string>
+    <string name="focus">关注</string>
+    <string name="me">我的</string>
+    <string name="add_label_hint">添加标签</string>
+    <string name="hot_label">热门标签</string>
+    <string name="send">发送</string>
+    <string name="menu_partner_guide">导航</string>
+</resources>

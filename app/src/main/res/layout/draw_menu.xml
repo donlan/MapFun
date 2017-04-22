@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~   Copyright 2016, donlan(梁桂栋)
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  ~
+  ~   Email me: stonelavender@hotmail.com
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:gravity="start"
+    android:orientation="vertical">
+
+
+    <dong.lan.base.ui.customView.CircleImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/head" />
+
+
+    <dong.lan.library.LabelTextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:text="@string/logout"
+        android:textSize="18sp"
+        app:bg_color="@color/logout_color"
+        app:radius="25dp"
+        app:strokeWidth="1dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/logout"
+        android:layout_below="@id/user_avatar"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <dong.lan.library.LabelTextView
+                android:id="@+id/me"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@drawable/ic_camera"
+                android:drawablePadding="30dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="60dp"
+                android:text="@string/me"
+                android:textSize="18sp"
+                app:bg_color="@color/logout_color"
+                app:radius="25dp"
+                app:strokeWidth="1dp" />
+
+
+            <dong.lan.library.LabelTextView
+                android:id="@+id/favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@drawable/ic_favorite"
+                android:drawablePadding="30dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="60dp"
+                android:text="@string/favorite"
+                android:textSize="18sp"
+                app:bg_color="@color/logout_color"
+                app:radius="25dp"
+                app:strokeWidth="1dp" />
+
+            <dong.lan.library.LabelTextView
+                android:id="@+id/friends"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@drawable/ic_people"
+                android:drawablePadding="30dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="60dp"
+                android:text="@string/friends"
+                android:textSize="18sp"
+                app:bg_color="@color/logout_color"
+                app:radius="25dp"
+                app:strokeWidth="1dp" />
+
+
+
+            <dong.lan.library.LabelTextView
+                android:id="@+id/partner_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@drawable/ic_timeline"
+                android:drawablePadding="30dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="60dp"
+                android:text="@string/menu_partner_guide"
+                android:textSize="18sp"
+                app:bg_color="@color/logout_color"
+                app:radius="25dp"
+                app:strokeWidth="1dp" />
+
+            <dong.lan.library.LabelTextView
+                android:id="@+id/setting"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@drawable/ic_settings"
+                android:drawablePadding="30dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="60dp"
+                android:text="@string/setting"
+                android:textSize="18sp"
+                app:bg_color="@color/logout_color"
+                app:radius="25dp"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
