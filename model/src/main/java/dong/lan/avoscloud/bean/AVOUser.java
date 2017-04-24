@@ -18,57 +18,94 @@
 
 package dong.lan.avoscloud.bean;
 
+import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.SaveCallback;
+
+import dong.lan.base.utils.SPHelper;
 
 /**
  * Created by 梁桂栋 on 2017/4/12.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
  */
+@AVClassName("MyUser")
+public class AVOUser extends AVObject {
 
-public class AVOUser extends AVUser {
 
+    public AVUser getCreator() {
+        return getAVUser("user");
+    }
 
-    public boolean isShareLocation(){
+    public void setCreator(AVUser user) {
+        super.put("user", user);
+    }
+
+    public void setCreator(AVOUser user) {
+        super.put("user", user.getCreator());
+    }
+
+    public boolean isShareLocation() {
         return getBoolean("shareLoc");
     }
 
-    public void setShareLocation(boolean shareLocation){
-        put("shareLoc",shareLocation);
+    public void setShareLocation(boolean shareLocation) {
+        put("shareLoc", shareLocation);
     }
 
-    public String nickname(){
+    public String nickname() {
         return getString("nickname");
     }
 
-    public void setNickname(String nickname){
-        put("nickname",nickname);
+    public void setNickname(String nickname) {
+        put("nickname", nickname);
     }
 
 
-    public void setSex(int sex){
-        put("sex",sex);
+    public String getUserName() {
+        return getCreator().getUsername();
     }
 
-    public int getSex(){
+    public void setUsername(String username) {
+        getCreator().setUsername(username);
+    }
+
+
+    public String getMobile() {
+        return getCreator().getMobilePhoneNumber();
+    }
+
+    public void setMobile(String mobile) {
+        getCreator().setMobilePhoneNumber(mobile);
+    }
+
+    public void setSex(int sex) {
+        put("sex", sex);
+    }
+
+    public int getSex() {
         return getInt("sex");
     }
+
     public AVFile getAvatar() {
-        return super.getAVFile("avatar");
+        return getAVFile("avatar");
     }
 
     public void setAvatar(AVFile file) {
         super.put("avatar", file);
     }
 
-    public void setLastLocation(double latitude,double longitude){
-        put("lastLocation",new AVGeoPoint(latitude,longitude));
+    public void setLastLocation(double latitude, double longitude) {
+        put("lastLocation", new AVGeoPoint(latitude, longitude));
     }
 
-    public AVGeoPoint getLastLocation(){
+    public AVGeoPoint getLastLocation() {
         return getAVGeoPoint("lastLocation");
     }
 
@@ -84,7 +121,44 @@ public class AVOUser extends AVUser {
 
     public void addFriend(AVOUser avoUser) {
         getFriends().add(avoUser);
-        this.saveInBackground();
+        this.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e != null)
+                    e.printStackTrace();
+            }
+        });
     }
 
+    public static void logInInBackground(String username, String password, LogInCallback<AVUser> logInCallback) {
+        AVUser.logInInBackground(username, password, logInCallback);
+    }
+
+
+    private static AVOUser user;
+
+    public static void setCurrentUser(AVOUser avoUser) {
+        user = avoUser;
+        SPHelper.instance().putString("user", avoUser.toString());
+    }
+
+    public static AVOUser getCurrentUser() {
+        if (user == null) {
+            String str = SPHelper.instance().getString("user");
+            try {
+                user =(AVOUser) AVObject.parseAVObject(str);
+                return user;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        } else {
+            return user;
+        }
+    }
+
+    public static void logOut() {
+        AVUser.logOut();
+        SPHelper.instance().putString("user","");
+    }
 }

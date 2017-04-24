@@ -23,7 +23,6 @@ import android.text.TextUtils;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
@@ -94,7 +93,6 @@ public class ChatPresenter implements ChatContract.Presenter {
             @Override
             public void done(AVIMException e) {
                 if (e == null) {
-                    view.toast(textMessage.getText());
                     view.newMessage(textMessage);
                 } else {
                     view.dialog("发送消息失败，错误码：" + e.getCode());
@@ -138,7 +136,7 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     private void createPartnerGuide(final double latitude, final double longitude, final String address) {
 
-        AVOUser me = AVOUser.getCurrentUser(AVOUser.class);
+        AVOUser me = AVOUser.getCurrentUser();
         AVOGuide avoGuide = new AVOGuide();
         avoGuide.setCreator(me);
         avoGuide.setAddress(address);
@@ -159,11 +157,11 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     //创建聊天会话
     private void init() {
-        view.initView(targetUser.getUsername());
+        view.initView(targetUser.getUserName());
 
-        AVOUser me = AVUser.getCurrentUser(AVOUser.class);
+        AVOUser me = AVOUser.getCurrentUser();
         App.myApp().getAvimClient().createConversation(Arrays.asList(me.getObjectId(), targetUser.getObjectId()),
-                me.getUsername() + "&" + targetUser.getUsername(),
+                me.getUserName() + "&" + targetUser.getUserName(),
                 null, false, true, new AVIMConversationCreatedCallback() {
                     @Override
                     public void done(AVIMConversation avimConversation, AVIMException e) {
@@ -174,7 +172,6 @@ public class ChatPresenter implements ChatContract.Presenter {
                                 @Override
                                 public void done(List<AVIMMessage> list, AVIMException e) {
                                     if (e == null || list != null) {
-                                        view.toast(list.size() + "");
                                         view.showMessage(list);
                                     }
                                 }

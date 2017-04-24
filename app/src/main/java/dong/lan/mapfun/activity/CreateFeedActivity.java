@@ -224,7 +224,7 @@ public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnT
         alert("发布中...");
 
         final AVOFeed avoFeed = new AVOFeed();
-        avoFeed.setCreator(AVOUser.getCurrentUser(AVOUser.class));
+        avoFeed.setCreator(AVOUser.getCurrentUser());
         avoFeed.setLocation(latitude, longitude);
         avoFeed.setContent(content);
         avoFeed.setLabel(labels);
@@ -243,7 +243,7 @@ public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnT
                                     public void done(AVException e) {
                                         if(e == null) {
                                             AVOFeedImage avoFeedImage = new AVOFeedImage();
-                                            avoFeedImage.setCreator(AVOUser.getCurrentUser(AVOUser.class));
+                                            avoFeedImage.setCreator(AVOUser.getCurrentUser());
                                             avoFeedImage.setImage(file);
                                             avoFeedImage.setFeed(avoFeed);
                                             avoFeedImage.saveEventually();
@@ -255,6 +255,8 @@ public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnT
                                     @Override
                                     public void done(Integer integer) {
                                         alert("图片上传中："+integer);
+                                        if(integer>=100)
+                                            dismiss();
                                     }
                                 });
                             }catch (Exception ep){

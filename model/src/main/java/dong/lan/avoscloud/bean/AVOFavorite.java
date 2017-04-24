@@ -30,12 +30,18 @@ import com.avos.avoscloud.AVObject;
 public class AVOFavorite extends AVObject {
 
     public AVOUser getOwner() {
-        return super.getAVUser("owner", AVOUser.class);
+        try {
+            return getAVObject("owner",AVOUser.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setOwner(AVOUser user) {
         super.put("owner", user);
     }
+
 
     public void setFeed(AVOFeed feed) {
         put("feed", feed);

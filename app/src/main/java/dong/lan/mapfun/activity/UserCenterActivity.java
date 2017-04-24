@@ -129,12 +129,13 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
     }
 
     private void addFollower() {
-        if (AVOUser.getCurrentUser(AVOUser.class).getObjectId().equals(user.getObjectId())) {
+        if (AVOUser.getCurrentUser().getObjectId().equals(user.getObjectId())) {
             //点击自己的关注者
             startActivity(new Intent(this, FriendsActivity.class));
         } else {
             //关注其他用户
-            user.addFriend(AVOUser.getCurrentUser(AVOUser.class));
+            user.addFriend(AVOUser.getCurrentUser());
+            userFollowerTv.setText((follower+1) + " 个关注者");
         }
     }
 
@@ -152,7 +153,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
 
         if (TextUtils.isEmpty(userSeq) && TextUtils.isEmpty(objId)) {
             userActionIb.setVisibility(View.GONE);
-            user = AVOUser.getCurrentUser(AVOUser.class);
+            user = AVOUser.getCurrentUser();
             setUpView(user);
         } else if (!TextUtils.isEmpty(userSeq)) {
             try {

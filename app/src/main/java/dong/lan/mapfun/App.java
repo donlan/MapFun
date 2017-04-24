@@ -29,6 +29,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
 import dong.lan.avoscloud.ModelConfig;
 import dong.lan.avoscloud.bean.AVOUser;
+import dong.lan.base.utils.SPHelper;
 import dong.lan.map.service.LocationService;
 import dong.lan.mapfun.im.IMMessageHandler;
 
@@ -77,6 +78,7 @@ public class App extends Application {
         app = this;
         LocationService.service().init(this);
         ModelConfig.init(this);
+        SPHelper.instance().init(this,"");
 
     }
 }

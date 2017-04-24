@@ -144,7 +144,7 @@ public class PickLabelActivity extends BaseBarActivity {
             dialog("标签不能为空");
         } else {
             final AVOLabel avoLabel = new AVOLabel();
-            avoLabel.setCreator(AVOUser.getCurrentUser(AVOUser.class));
+            avoLabel.setCreator(AVOUser.getCurrentUser());
             avoLabel.setLabel(label);
             avoLabel.saveInBackground(new SaveCallback() {
                 @Override

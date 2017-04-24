@@ -66,7 +66,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 .load(avFile == null ? "" : avFile.getUrl())
                 .error(R.drawable.head)
                 .into(holder.avatar);
-        holder.username.setText(users.get(position).getUsername());
+        holder.username.setText(users.get(position).getUserName());
     }
 
     @Override

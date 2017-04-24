@@ -27,7 +27,6 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
-import com.avos.avoscloud.SaveCallback;
 
 import java.util.List;
 
@@ -112,13 +111,7 @@ public class FeedDetailPresenter implements FeedDetailContract.Presenter {
     @Override
     public void saveLike() {
         if (feed != null && isLike) {
-            feed.addLike(AVOUser.getCurrentUser(AVOUser.class));
-            feed.saveEventually(new SaveCallback() {
-                @Override
-                public void done(AVException e) {
-                    view.toast(""+e);
-                }
-            });
+            feed.addLike(AVOUser.getCurrentUser());
         }
     }
 }

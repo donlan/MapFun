@@ -42,7 +42,12 @@ public class AVOGuide extends AVObject {
     }
 
     public AVOUser getCreator() {
-        return super.getAVUser("creator", AVOUser.class);
+        try {
+            return getAVObject("creator",AVOUser.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setCreator(AVOUser user) {

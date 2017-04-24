@@ -21,8 +21,6 @@ package dong.lan.mapfun.helper;
 import android.content.Context;
 import android.view.View;
 
-import com.avos.avoscloud.AVUser;
-
 import dong.lan.avoscloud.bean.AVOFeed;
 import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.base.ui.customView.MapPinNumView;
@@ -47,7 +45,7 @@ public class FeedMarkerHelper {
 
     public  View formMarkerView(Context context,AVOFeed feed){
         MapPinNumView pinNumView = null;
-        AVOUser me = AVUser.getCurrentUser(AVOUser.class);
+        AVOUser me = AVOUser.getCurrentUser();
         if(me.equals(feed.getCreator())){
             pinNumView = new MapPinNumView(context,feed.getContent().substring(0,2),0xff2ecc71,18,0xffffffff);
         }else{

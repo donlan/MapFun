@@ -58,7 +58,7 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         App.myApp().getLocationService().unregisterCallback(this);
         BDLocation point = App.myApp().getLocationService().getLastLocation();
         if (point != null) {
-            AVOUser user = AVOUser.getCurrentUser(AVOUser.class);
+            AVOUser user = AVOUser.getCurrentUser();
             user.setLastLocation(point.getLatitude(), point.getLongitude());
             user.saveEventually();
         }
@@ -74,7 +74,7 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         query.whereWithinKilometers("location", point, 10);
         query.limit(100);
         query.include("labels");
-        query.whereEqualTo("isPublic",true);
+        query.whereEqualTo("isPublic", true);
         query.findInBackground(new FindCallback<AVOFeed>() {
             @Override
             public void done(List<AVOFeed> list, AVException e) {
@@ -91,16 +91,17 @@ public class MainMapPresenter implements MainMapContract.Presenter {
     @Override
     public void queryNearUser() {
         BDLocation location = LocationService.service().getLastLocation();
-        if(location == null){
+        if (location == null) {
             view.toast("无法获取当前位置信息");
             return;
         }
-        AVQuery<AVOUser> query = new AVQuery<>("_User");
+        AVQuery<AVOUser> query = new AVQuery<>("MyUser");
         AVGeoPoint point = new AVGeoPoint();
         point.setLatitude(location.getLatitude());
         point.setLongitude(location.getLongitude());
         query.whereWithinKilometers("lastLocation", point, 10);
         query.limit(100);
+        query.whereNotEqualTo("objectId",AVOUser.getCurrentUser().getObjectId());
         query.findInBackground(new FindCallback<AVOUser>() {
             @Override
             public void done(List<AVOUser> list, AVException e) {
@@ -124,7 +125,7 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         query.whereContainedIn("labels", labels);
         query.include("labels");
         query.whereWithinKilometers("location", point, 10);
-        query.whereEqualTo("isPublic",true);
+        query.whereEqualTo("isPublic", true);
         query.limit(100);
         query.findInBackground(new FindCallback<AVOFeed>() {
             @Override
@@ -148,13 +149,13 @@ public class MainMapPresenter implements MainMapContract.Presenter {
                 String data = bundle.getString("user");
                 AVOUser avoUser = null;
                 try {
-                     avoUser = (AVOUser) AVOUser.parseAVObject(data);
+                    avoUser = (AVOUser) AVOUser.parseAVObject(data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if(avoUser!=null){
+                if (avoUser != null) {
                     Intent intent = new Intent(view.activity(), UserCenterActivity.class);
-                    intent.putExtra("userSeq",data);
+                    intent.putExtra("userSeq", data);
                     view.activity().startActivity(intent);
                 }
             } else if (type == 1) {// 点击的是图趣
@@ -165,14 +166,21 @@ public class MainMapPresenter implements MainMapContract.Presenter {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if(feed!=null){
+                if (feed != null) {
                     Intent intent = new Intent(view.activity(), FeedDetailActivity.class);
-                    intent.putExtra("feed",data);
+                    intent.putExtra("feed", data);
                     view.activity().startActivity(intent);
                 }
             }
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void saveShareLocation(boolean isShare) {
+        AVOUser user = AVOUser.getCurrentUser();
+        user.setShareLocation(isShare);
+        user.saveEventually();
     }
 }

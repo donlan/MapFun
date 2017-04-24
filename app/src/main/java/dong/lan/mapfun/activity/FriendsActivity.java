@@ -52,7 +52,8 @@ public class FriendsActivity extends BaseBarActivity implements BaseItemClickLis
         friendsList = (RecyclerView) findViewById(R.id.friends_list);
 
         friendsList.setLayoutManager(new GridLayoutManager(this, 1));
-        AVOUser avoUser = AVOUser.getCurrentUser(AVOUser.class);
+
+        AVOUser avoUser = AVOUser.getCurrentUser();
         AVQuery<AVOUser> query = avoUser.getFriends().getQuery();
         query.findInBackground(new FindCallback<AVOUser>() {
             @Override
@@ -65,6 +66,7 @@ public class FriendsActivity extends BaseBarActivity implements BaseItemClickLis
                         friendsList.setAdapter(new FriendsAdapter(list, FriendsActivity.this));
                     }
                 } else {
+                    e.printStackTrace();
                     dialog("获取好友失败，错误码：" + e.getCode());
                 }
             }

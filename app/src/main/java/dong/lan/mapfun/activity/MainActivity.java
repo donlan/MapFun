@@ -54,6 +54,7 @@ import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.base.ui.BaseActivity;
 import dong.lan.base.ui.customView.CircleImageView;
 import dong.lan.base.ui.customView.PinCircleImageView;
+import dong.lan.library.LabelTextView;
 import dong.lan.map.service.LocationService;
 import dong.lan.map.utils.MapHelper;
 import dong.lan.mapfun.App;
@@ -76,11 +77,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView feedSearchIv;
     private ImageView barLeft;
     private CircleImageView avatar;
-
+    private LabelTextView shareLocationLtv;
     private BaiduMap baiduMap;
     private SlidingRootNav slidingRootNav;
     private boolean isMenuOpen = false;
     private MainMapContract.Presenter presenter;
+    private boolean isShare = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,13 +135,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         addFeedIv = (ImageView) findViewById(R.id.menu_add_feed);
         feedSearchIv = (ImageView) findViewById(R.id.menu_near_search);
         barLeft = (ImageView) findViewById(R.id.bar_left);
-
+        shareLocationLtv = (LabelTextView) findViewById(R.id.shareLocation);
         barLeft.setOnClickListener(this);
         nearUserIv.setOnClickListener(this);
         nearFeedIv.setOnClickListener(this);
         addFeedIv.setOnClickListener(this);
         feedSearchIv.setOnClickListener(this);
         tapBarMenu.setOnClickListener(this);
+        shareLocationLtv.setOnClickListener(this);
 
         List<String> pers = new ArrayList<>(5);
         pers.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -160,10 +163,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         App.myApp().initIM();
 
 
-        AVOUser user = AVOUser.getCurrentUser(AVOUser.class);
+        AVOUser user = AVOUser.getCurrentUser();
+        isShare = user.isShareLocation();
+        shareLocationLtv.setText("共享位置："+(isShare?"开":"关"));
         Glide.with(this).load(user.getAvatar() == null ? "" : user.getAvatar().getUrl())
                 .error(R.drawable.head)
                 .into(avatar);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -255,6 +261,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.user_avatar:
                 startActivity(new Intent(this, UserCenterActivity.class));
+                break;
+            case R.id.shareLocation:
+                isShare = !isShare;
+                shareLocationLtv.setText("共享位置："+(isShare?"开":"关"));
+                presenter.saveShareLocation(isShare);
                 break;
         }
     }

@@ -22,7 +22,6 @@ import android.content.Context;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
 
 import dong.lan.avoscloud.bean.AVOFavorite;
 import dong.lan.avoscloud.bean.AVOFeed;
@@ -49,9 +48,9 @@ public final class ModelConfig {
         AVObject.registerSubclass(AVOLabel.class);
         AVObject.registerSubclass(AVOFeed.class);
         AVObject.registerSubclass(AVOFavorite.class);
-        AVUser.alwaysUseSubUserClass(AVOUser.class);
         AVObject.registerSubclass(AVOFeedImage.class);
         AVObject.registerSubclass(AVOGuide.class);
+        AVObject.registerSubclass(AVOUser.class);
         AVOSCloud.initialize(appContext, API_ID, API_KEY);
         AVOSCloud.setDebugLogEnabled(true);
         Realm.init(appContext);

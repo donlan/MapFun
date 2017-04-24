@@ -22,8 +22,12 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogInCallback;
+
+import java.util.List;
 
 import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.mapfun.activity.MainActivity;
@@ -58,17 +62,31 @@ public class LoginPresenter implements ILoginPresenter {
         AVOUser.logInInBackground(username, password, new LogInCallback<AVUser>() {
             @Override
             public void done(AVUser avUser, AVException e) {
-                if (e == null) {
-                    view.toast("欢迎你回来");
-                    view.activity().startActivity(new Intent(view.activity(), MainActivity.class));
-                    view.activity().finish();
-                } else {
-                    if (e.getCode() == 211) {
-                        view.dialog("登录失败，该用户不存在");
-                    } else {
-                        view.dialog("登录失败，错误码：" + e.getCode());
+                AVQuery<AVOUser> query = new AVQuery<AVOUser>("MyUser");
+                query.whereEqualTo("user",query);
+                query.include("user");
+                query.findInBackground(new FindCallback<AVOUser>() {
+                    @Override
+                    public void done(List<AVOUser> list, AVException e) {
+                        if (e == null ) {
+                            if(list!=null && !list.isEmpty()) {
+                                AVOUser.setCurrentUser(list.get(0));
+                                view.toast("欢迎你回来");
+                                view.activity().startActivity(new Intent(view.activity(), MainActivity.class));
+                                view.activity().finish();
+                            }else{
+                                view.dialog("登录失败，该用户不存在");
+                            }
+                        } else {
+                            e.printStackTrace();
+                            if (e.getCode() == 211) {
+                                view.dialog("登录失败，该用户不存在");
+                            } else {
+                                view.dialog("登录失败，错误码：" + e.getCode());
+                            }
+                        }
                     }
-                }
+                });
             }
         });
     }

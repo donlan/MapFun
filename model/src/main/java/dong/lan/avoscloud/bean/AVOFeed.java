@@ -19,9 +19,11 @@
 package dong.lan.avoscloud.bean;
 
 import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVRelation;
+import com.avos.avoscloud.SaveCallback;
 
 import java.util.List;
 
@@ -36,7 +38,12 @@ import java.util.List;
 public class AVOFeed extends AVObject {
 
     public AVOUser getCreator() {
-        return super.getAVUser("creator", AVOUser.class);
+        try {
+            return getAVObject("creator",AVOUser.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setCreator(AVOUser user) {
@@ -87,11 +94,23 @@ public class AVOFeed extends AVObject {
 
     public void removeLike(AVOUser tourist) {
         getLikes().remove(tourist);
-        this.saveInBackground();
+        this.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if(e != null)
+                    e.printStackTrace();
+            }
+        });
     }
 
     public void addLike(AVOUser tourist) {
         getLikes().add(tourist);
-        this.saveInBackground();
+        this.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if(e!=null)
+                    e.printStackTrace();
+            }
+        });
     }
 }

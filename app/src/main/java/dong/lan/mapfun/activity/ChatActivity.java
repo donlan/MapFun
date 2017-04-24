@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +52,7 @@ import dong.lan.mapfun.mvp.presenter.ChatPresenter;
  * 聊天页面
  */
 
-public class ChatActivity extends BaseBarActivity implements View.OnClickListener ,ChatContract.View {
+public class ChatActivity extends BaseBarActivity implements View.OnClickListener, ChatContract.View {
 
     private SwipeRefreshLayout refreshLayout;
     private LinearLayout chatToolLayout;
@@ -143,7 +144,7 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
                         @Override
                         public boolean onDialogClick(int which) {
                             if (which == Dialog.CLICK_RIGHT) {
-                                presenter.newGuide(latitude,longitude,address);
+                                presenter.newGuide(latitude, longitude, address);
                             }
                             return true;
                         }
@@ -151,7 +152,6 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
 
     private MyMessageHandler myMessageHandler;
@@ -178,6 +178,7 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
     @Override
     public void initView(String username) {
         adapter = new ChatAdapter();
+        chatList.setLayoutManager(new GridLayoutManager(this, 1));
         chatList.setAdapter(adapter);
         tittle(username);
     }
@@ -185,18 +186,21 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
     @Override
     public void showMessage(List<AVIMMessage> list) {
         adapter.newMessage(list);
+        chatList.scrollToPosition(list.size());
     }
 
     @Override
     public void newMessage(AVIMMessage textMessage) {
         adapter.newMessage(textMessage);
+        chatList.scrollToPosition(chatList.getAdapter().getItemCount() - 1);
+        chatInput.setText("");
     }
 
 
     private class MyMessageHandler extends AVIMMessageHandler {
         @Override
         public void onMessage(AVIMMessage message, AVIMConversation avimConversation, AVIMClient client) {
-            presenter.handlerMessage(message,avimConversation,client);
+            presenter.handlerMessage(message, avimConversation, client);
             super.onMessage(message, avimConversation, client);
         }
     }

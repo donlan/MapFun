@@ -63,7 +63,7 @@ public class PartnerGuideAdapter extends RecyclerView.Adapter<PartnerGuideAdapte
         sb.append("协同用户： ");
         for (AVOUser label : guide.getPartner()) {
             sb.append("#");
-            sb.append(label.getUsername());
+            sb.append(label.getCreator().getUsername());
             sb.append("  ");
         }
         holder.users.setText(sb.toString());

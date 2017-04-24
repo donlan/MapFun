@@ -25,7 +25,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public class FavoriteActivity extends BaseBarActivity implements BaseItemClickLi
     }
 
     private void init() {
-        user = AVUser.getCurrentUser(AVOUser.class);
+        user = AVOUser.getCurrentUser();
 
         AVQuery<AVOFeed> query = new AVQuery<>("Feed");
         query.include("labels");

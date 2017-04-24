@@ -32,7 +32,6 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
@@ -239,7 +238,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         LocationService.service().registerCallback(this,locationCallback);
 
         List<AVOUser> userList = guide.getPartner();
-        me = AVUser.getCurrentUser(AVOUser.class);
+        me = AVOUser.getCurrentUser();
         if(userList.get(0).getObjectId().equals(me.getObjectId())){
             other = userList.get(1);
         }else {

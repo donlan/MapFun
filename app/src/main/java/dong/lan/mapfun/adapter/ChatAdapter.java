@@ -52,12 +52,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public ChatAdapter() {
         messages = new ArrayList<>();
-        me = AVOUser.getCurrentUser(AVOUser.class).getObjectId();
+        me = AVOUser.getCurrentUser().getObjectId();
     }
 
     public ChatAdapter(List<AVIMMessage> messages) {
         this.messages = messages;
-        me = AVOUser.getCurrentUser(AVOUser.class).getObjectId();
+        me = AVOUser.getCurrentUser().getObjectId();
     }
 
     public void newMessage(AVIMMessage message) {
@@ -96,12 +96,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return messages.get(position).getFrom().equals(me) ? TYPE_SEND : TYPE_FROM;
+        return me.equals(messages.get(position).getFrom()) ? TYPE_SEND : TYPE_FROM;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         AVIMMessage avimMessage = messages.get(position);
+
         if (avimMessage instanceof AVIMTextMessage) {
             AVIMTextMessage textMessage = (AVIMTextMessage) avimMessage;
             holder.text.setText(textMessage.getText());
@@ -111,6 +112,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.text.setText(locationMessage.getText());
             holder.chatTime.setText(DateUtils.getTimestampString(locationMessage.getTimestamp()));
         }
+
     }
 
     @Override
@@ -128,9 +130,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemView.findViewById(R.id.chat_head);
-            itemView.findViewById(R.id.chat_text);
-            itemView.findViewById(R.id.chat_time);
+            head = (CircleImageView) itemView.findViewById(R.id.chat_head);
+            text = (TextView) itemView.findViewById(R.id.chat_text);
+            chatTime = (TextView) itemView.findViewById(R.id.chat_time);
         }
     }
 }

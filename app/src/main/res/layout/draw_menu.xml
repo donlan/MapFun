@@ -149,6 +149,26 @@
                 app:strokeWidth="1dp" />
 
             <dong.lan.library.LabelTextView
+                android:id="@+id/shareLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@drawable/ic_pin_drop"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="共享位置：开"
+                android:textSize="18sp"
+                app:bg_color="@color/logout_color"
+                app:radius="25dp"
+                app:strokeWidth="1dp" />
+
+            <dong.lan.library.LabelTextView
                 android:id="@+id/setting"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"

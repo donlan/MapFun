@@ -51,6 +51,8 @@ public interface MainMapContract {
         void queryNearByLabel(List<AVOLabel> labels);
 
         boolean handlerMarkerClick(Marker marker);
+
+        void saveShareLocation(boolean isShare);
     }
 
     public interface Model {

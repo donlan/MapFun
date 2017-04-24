@@ -59,7 +59,7 @@ public class PartnerGuideActivity extends BaseBarActivity implements BaseItemCli
 
         partnerGuideList.setLayoutManager(new GridLayoutManager(this, 1));
 
-        user = AVOUser.getCurrentUser(AVOUser.class);
+        user = AVOUser.getCurrentUser();
 
 
         init();
