@@ -18,49 +18,40 @@
 
 package dong.lan.mapfun.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.avos.avoscloud.AVGeoPoint;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
-import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import dong.lan.avoscloud.bean.AVOGuide;
-import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.base.ui.BaseBarActivity;
 import dong.lan.base.ui.Dialog;
 import dong.lan.library.LabelTextView;
 import dong.lan.map.activity.PickLocationActivity;
 import dong.lan.map.service.Config;
-import dong.lan.mapfun.App;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.adapter.ChatAdapter;
+import dong.lan.mapfun.mvp.contract.ChatContract;
+import dong.lan.mapfun.mvp.presenter.ChatPresenter;
 
-public class ChatActivity extends BaseBarActivity implements View.OnClickListener {
+/**
+ * 聊天页面
+ */
+
+public class ChatActivity extends BaseBarActivity implements View.OnClickListener ,ChatContract.View {
 
     private SwipeRefreshLayout refreshLayout;
     private LinearLayout chatToolLayout;
@@ -71,6 +62,8 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
     private Button sendBtn;
     private ImageButton chatToggle;
 
+
+    private ChatContract.Presenter presenter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +84,7 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendTextMessage();
+                presenter.sendTextMessage(chatInput.getText().toString());
             }
         });
 
@@ -102,87 +95,17 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
             }
         });
 
+        presenter = new ChatPresenter(this);
+
 
         String userStr = getIntent().getStringExtra(dong.lan.base.ui.base.Config.INTENT_USER);
-        if (TextUtils.isEmpty(userStr)) {
-            finish();
-        } else {
-            try {
-                targetUser = (AVOUser) AVObject.parseAVObject(userStr);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (targetUser == null)
-                finish();
-            else {
-                init();
-            }
-        }
+
+        presenter.start(userStr);
 
     }
 
-
-    private AVIMConversation conversation;
     private ChatAdapter adapter;
 
-    private void init() {
-        adapter = new ChatAdapter();
-        chatList.setAdapter(adapter);
-
-        tittle(targetUser.getUsername());
-
-        AVOUser me = AVUser.getCurrentUser(AVOUser.class);
-        App.myApp().getAvimClient().createConversation(Arrays.asList(me.getObjectId(), targetUser.getObjectId()),
-                me.getUsername() + "&" + targetUser.getUsername(),
-                null, false, true, new AVIMConversationCreatedCallback() {
-                    @Override
-                    public void done(AVIMConversation avimConversation, AVIMException e) {
-                        if (e == null) {
-                            toast(avimConversation.getName());
-                            conversation = avimConversation;
-                            conversation.queryMessages(100, new AVIMMessagesQueryCallback() {
-                                @Override
-                                public void done(List<AVIMMessage> list, AVIMException e) {
-                                    if (e == null || list != null) {
-                                        adapter.newMessage(list);
-                                    }
-                                }
-                            });
-                        } else {
-                            dialog("创建会话失败，错误码：" + e.getCode());
-                            finish();
-                        }
-                    }
-                });
-
-    }
-
-    private AVOUser targetUser;
-
-    private void sendTextMessage() {
-        if (conversation == null) {
-            toast("无效的会话");
-            return;
-        }
-        String str = chatInput.getText().toString();
-        if (TextUtils.isEmpty(str)) {
-            toast("空消息");
-            return;
-        }
-        final AVIMTextMessage textMessage = new AVIMTextMessage();
-        textMessage.setText(str);
-        conversation.sendMessage(textMessage, new AVIMConversationCallback() {
-            @Override
-            public void done(AVIMException e) {
-                if (e == null) {
-                    toast(textMessage.getText());
-                    adapter.newMessage(textMessage);
-                } else {
-                    dialog("发送消息失败，错误码：" + e.getCode());
-                }
-            }
-        });
-    }
 
     @Override
     public void onClick(View v) {
@@ -220,7 +143,7 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
                         @Override
                         public boolean onDialogClick(int which) {
                             if (which == Dialog.CLICK_RIGHT) {
-                                newGuideAction();
+                                presenter.newGuide(latitude,longitude,address);
                             }
                             return true;
                         }
@@ -229,54 +152,6 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void newGuideAction() {
-        if (conversation == null) {
-            toast("无效的会话");
-            return;
-        }
-        Map<String, Object> info = new HashMap<>(1);
-        info.put("type", "guide");
-        final AVIMLocationMessage locationMessage = new AVIMLocationMessage();
-        locationMessage.setLocation(new AVGeoPoint(latitude, longitude));
-        locationMessage.setText("发起了协同定位导航。\n目的地：" + address);
-        locationMessage.setAttrs(info);
-        conversation.sendMessage(locationMessage, new AVIMConversationCallback() {
-            @Override
-            public void done(AVIMException e) {
-                if (e == null) {
-                    adapter.newMessage(locationMessage);
-                    createPartnerGuide();
-                } else {
-                    dialog("发起协同定位失败，错误码：" + e.getCode());
-                }
-            }
-        });
-    }
-
-    private void createPartnerGuide() {
-
-        AVOUser me = AVUser.getCurrentUser(AVOUser.class);
-        App.myApp().getAvimClient().createConversation(Arrays.asList(me.getObjectId(), targetUser.getObjectId()),
-                me.getUsername() + " + " + targetUser.getUsername(),
-                null, false, false, new AVIMConversationCreatedCallback() {
-                    @Override
-                    public void done(AVIMConversation avimConversation, AVIMException e) {
-                        if (e == null) {
-                            AVOUser me = AVOUser.getCurrentUser(AVOUser.class);
-                            AVOGuide avoGuide = new AVOGuide();
-                            avoGuide.setCreator(me);
-                            avoGuide.setConversationId(avimConversation.getConversationId());
-                            avoGuide.setAddress(address);
-                            avoGuide.setStatus(dong.lan.base.ui.base.Config.GUIDE_STATUS_CREATED);
-                            avoGuide.setLocation(latitude, longitude);
-                            avoGuide.setPartner(Arrays.asList(me, targetUser));
-                            avoGuide.saveEventually();
-                        } else {
-                            dialog("创建会话失败，错误码：" + e.getCode());
-                        }
-                    }
-                });
-    }
 
 
     private MyMessageHandler myMessageHandler;
@@ -295,13 +170,33 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
         AVIMMessageManager.unregisterMessageHandler(AVIMMessage.class, myMessageHandler);
     }
 
+    @Override
+    public Activity activity() {
+        return this;
+    }
+
+    @Override
+    public void initView(String username) {
+        adapter = new ChatAdapter();
+        chatList.setAdapter(adapter);
+        tittle(username);
+    }
+
+    @Override
+    public void showMessage(List<AVIMMessage> list) {
+        adapter.newMessage(list);
+    }
+
+    @Override
+    public void newMessage(AVIMMessage textMessage) {
+        adapter.newMessage(textMessage);
+    }
+
 
     private class MyMessageHandler extends AVIMMessageHandler {
         @Override
         public void onMessage(AVIMMessage message, AVIMConversation avimConversation, AVIMClient client) {
-            if (conversation != null && avimConversation.getConversationId().equals(conversation.getConversationId())) {
-                adapter.newMessage(message);
-            }
+            presenter.handlerMessage(message,avimConversation,client);
             super.onMessage(message, avimConversation, client);
         }
     }

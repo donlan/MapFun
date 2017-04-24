@@ -41,6 +41,10 @@ import dong.lan.base.ui.customView.TagCloudView;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.event.PickLabelEvent;
 
+/**
+ * 选择标签页面
+ */
+
 public class PickLabelActivity extends BaseBarActivity {
 
     private EditText labelInput;

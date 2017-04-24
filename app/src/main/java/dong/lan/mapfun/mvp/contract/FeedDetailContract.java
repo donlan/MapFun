@@ -16,24 +16,43 @@
  *   Email me: stonelavender@hotmail.com
  */
 
-package dong.lan.mapfun.event;
+package dong.lan.mapfun.mvp.contract;
+
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.List;
 
+import dong.lan.avoscloud.bean.AVOFeedImage;
 import dong.lan.avoscloud.bean.AVOLabel;
+import dong.lan.base.ui.IActivityFunc;
+import dong.lan.base.ui.ProgressView;
 
 /**
  * Created by 梁桂栋 on 2017/4/15.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
- * 用于通过EventBus传递标签
  */
 
-public class PickLabelEvent {
+public interface FeedDetailContract {
+    public interface View extends ProgressView,IActivityFunc {
+        void showFeedImages(List<AVOFeedImage> images);
 
-    public List<AVOLabel> labels;
+        void showFeedLikes(int likeCount);
 
-    public PickLabelEvent(List<AVOLabel> labels) {
-        this.labels = labels;
+        void showLabels(List<AVOLabel> labels);
+
+        void showContent(String content);
+    }
+
+    public interface Presenter {
+        void like(ImageButton likeIcon, TextView likText);
+
+        void fetchFeed(String feedSeq);
+
+        void saveLike();
+    }
+
+    public interface Model {
     }
 }

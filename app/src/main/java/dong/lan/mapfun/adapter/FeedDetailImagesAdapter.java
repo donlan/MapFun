@@ -37,6 +37,7 @@ import dong.lan.mapfun.R;
  * Created by 梁桂栋 on 2017/4/15.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
+ * 内容详情页的图片显示适配器
  */
 
 public class FeedDetailImagesAdapter extends RecyclerView.Adapter<FeedDetailImagesAdapter.ViewHolder> {

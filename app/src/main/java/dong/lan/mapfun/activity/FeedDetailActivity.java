@@ -18,53 +18,46 @@
 
 package dong.lan.mapfun.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.CountCallback;
-import com.avos.avoscloud.FindCallback;
-import com.avos.avoscloud.SaveCallback;
-
 import java.util.List;
 
-import dong.lan.avoscloud.bean.AVOFeed;
 import dong.lan.avoscloud.bean.AVOFeedImage;
 import dong.lan.avoscloud.bean.AVOLabel;
-import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.base.ui.BaseActivity;
 import dong.lan.base.ui.customView.TagCloudView;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.adapter.FeedDetailImagesAdapter;
+import dong.lan.mapfun.mvp.contract.FeedDetailContract;
+import dong.lan.mapfun.mvp.presenter.FeedDetailPresenter;
 
-public class FeedDetailActivity extends BaseActivity {
+/**
+ * 内容详情界面
+ */
 
-    private int likeCount = 0;
+public class FeedDetailActivity extends BaseActivity implements FeedDetailContract.View{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_detail);
-
         initView();
     }
-
 
     private TagCloudView labelTags;
     private RecyclerView feedImagesRv;
     private ImageButton likeIb;
     private TextView content;
     private TextView likeCountTv;
-    private AVOFeed feed;
-    private boolean isLike = false;
-    private List<AVOUser> likes;
+    private FeedDetailContract.Presenter presenter;
+
     private void initView() {
         labelTags = (TagCloudView) findViewById(R.id.feed_labels_view);
         feedImagesRv = (RecyclerView) findViewById(R.id.feed_images_view);
@@ -81,75 +74,44 @@ public class FeedDetailActivity extends BaseActivity {
         likeIb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLike) {
-                    likeCount--;
-                    likeIb.setImageResource(R.drawable.ic_favorite_border);
-                } else {
-                    likeCount++;
-                    likeIb.setImageResource(R.drawable.ic_favorite);
-                }
-                likeCountTv.setText(String.valueOf(likeCount));
-                isLike = !isLike;
+                presenter.like(likeIb,likeCountTv);
             }
         });
 
-        initData();
+        presenter = new FeedDetailPresenter(this);
+
+        presenter.fetchFeed(getIntent().getStringExtra("feed"));
     }
-
-    private void initData() {
-        String feedStr = getIntent().getStringExtra("feed");
-        if (TextUtils.isEmpty(feedStr)) {
-            toast("无效的图趣资源");
-        } else {
-            try {
-                feed = (AVOFeed) AVObject.parseAVObject(feedStr);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if(feed!=null){
-                content.setText(feed.getContent());
-                final List<AVOLabel> labels = feed.getLabel();
-                labelTags.setData(labels);
-                AVQuery<AVOFeedImage> query = new AVQuery<>("FeedImage");
-                query.include("image");
-                query.whereEqualTo("feed", feed);
-                query.findInBackground(new FindCallback<AVOFeedImage>() {
-                    @Override
-                    public void done(List<AVOFeedImage> list, AVException e) {
-                        if (list != null) {
-                            feedImagesRv.setAdapter(new FeedDetailImagesAdapter(list));
-                        }
-                    }
-                });
-
-
-
-                AVQuery<AVObject> relationQuery = feed.getLikes().getQuery();
-                relationQuery.countInBackground(new CountCallback() {
-                    @Override
-                    public void done(int i, AVException e) {
-                        likeCount = i;
-                        likeCountTv.setText(String.valueOf(likeCount));
-                    }
-                });
-
-            }
-        }
-    }
-
 
 
     @Override
     public void finish() {
-        if (feed != null && isLike) {
-            feed.addLike(AVOUser.getCurrentUser(AVOUser.class));
-            feed.saveEventually(new SaveCallback() {
-                @Override
-                public void done(AVException e) {
-                    toast(""+e);
-                }
-            });
-        }
+        presenter.saveLike();
         super.finish();
+    }
+
+    @Override
+    public Activity activity() {
+        return this;
+    }
+
+    @Override
+    public void showFeedImages(List<AVOFeedImage> images) {
+        feedImagesRv.setAdapter(new FeedDetailImagesAdapter(images));
+    }
+
+    @Override
+    public void showFeedLikes(int likeCount) {
+        likeCountTv.setText(likeCount+" 人喜欢");
+    }
+
+    @Override
+    public void showLabels(List<AVOLabel> labels) {
+        labelTags.setData(labels);
+    }
+
+    @Override
+    public void showContent(String content) {
+        this.content.setText(content);
     }
 }

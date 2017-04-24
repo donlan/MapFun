@@ -32,12 +32,6 @@ import java.util.List;
 @AVClassName("Guide")
 public class AVOGuide extends AVObject {
 
-    public void setConversationId(String conversationId){
-        put("conversationId",conversationId);
-    }
-    public int getConversationId(){
-        return getInt("conversationId");
-    }
 
     public void setStatus(int status){
         put("status",status);

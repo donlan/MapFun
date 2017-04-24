@@ -16,21 +16,15 @@
  *   Email me: stonelavender@hotmail.com
  */
 
-package dong.lan.mapfun.activity;
+package dong.lan.mapfun.mvp.model;
 
-import android.os.Bundle;
-
-import dong.lan.base.ui.BaseActivity;
-import dong.lan.mapfun.R;
+import dong.lan.mapfun.mvp.contract.ChatContract;
 
 /**
- * 设置页面
+ * Created by 梁桂栋 on 2017/4/24.
+ * Email: 760625325@qq.com
+ * Github: github.com/donlan
  */
-public class SettingActivity extends BaseActivity{
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-    }
+class ChatModel implements ChatContract.Model {
 }

@@ -35,6 +35,7 @@ import dong.lan.mapfun.R;
  * Created by 梁桂栋 on 2017/4/16.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
+ * 协同导航列表适配器
  */
 
 public class PartnerGuideAdapter extends RecyclerView.Adapter<PartnerGuideAdapter.ViewHolder> {

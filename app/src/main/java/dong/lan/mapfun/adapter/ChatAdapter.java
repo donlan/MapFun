@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
@@ -41,6 +40,7 @@ import dong.lan.mapfun.R;
  * Created by 梁桂栋 on 2017/4/17.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
+ * 聊天适配器
  */
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
@@ -65,7 +65,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             messages = new ArrayList<>();
         }
         messages.add(message);
-        notifyItemInserted(messages.size() - 1);
+        //notifyItemInserted(messages.size() - 1);
+        notifyDataSetChanged();
     }
 
     public void newMessage(List<AVIMMessage> message) {
@@ -77,7 +78,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             s = 0;
         messages.addAll(message);
         int e = messages.size() - 1;
-        notifyItemRangeInserted(s, e);
+        //notifyItemRangeInserted(s, e);
+        notifyDataSetChanged();
     }
 
 
@@ -109,7 +111,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.text.setText(locationMessage.getText());
             holder.chatTime.setText(DateUtils.getTimestampString(locationMessage.getTimestamp()));
         }
-        Toast.makeText(holder.itemView.getContext(),avimMessage.getContent(),Toast.LENGTH_SHORT).show();
     }
 
     @Override

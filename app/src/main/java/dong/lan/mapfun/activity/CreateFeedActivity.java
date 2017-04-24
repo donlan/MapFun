@@ -60,6 +60,9 @@ import dong.lan.mapfun.R;
 import dong.lan.mapfun.adapter.FeedImagesAdapter;
 import dong.lan.mapfun.event.PickLabelEvent;
 
+/**
+ * 发布内容界面
+ */
 public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnTagClickListener, View.OnClickListener {
 
 

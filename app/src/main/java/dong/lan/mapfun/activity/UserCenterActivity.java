@@ -52,6 +52,10 @@ import dong.lan.base.utils.FileUtil;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.adapter.FeedsAdapter;
 
+
+/**
+ * 用户中心界面
+ */
 public class UserCenterActivity extends BaseActivity implements BaseItemClickListener<AVOFeed> {
 
 
@@ -85,6 +89,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
         }
     };
     private String objId;
+    private boolean notMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +129,10 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
     }
 
     private void addFollower() {
-        if(AVOUser.getCurrentUser(AVOUser.class).getObjectId().equals(user.getObjectId())){
+        if (AVOUser.getCurrentUser(AVOUser.class).getObjectId().equals(user.getObjectId())) {
             //点击自己的关注者
-            startActivity(new Intent(this,FriendsActivity.class));
-        }else{
+            startActivity(new Intent(this, FriendsActivity.class));
+        } else {
             //关注其他用户
             user.addFriend(AVOUser.getCurrentUser(AVOUser.class));
         }
@@ -184,7 +189,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
             @Override
             public void done(int i, AVException e) {
                 follower = i;
-                userFollowerTv.setText(String.valueOf(i));
+                userFollowerTv.setText(follower + " 个关注者");
             }
         });
 
@@ -206,9 +211,15 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
                 .error(R.drawable.head)
                 .into(avatar);
 
+        notMe = !user.getObjectId().equals(AVOUser.getCurrentUser().getObjectId());
+
         AVQuery<AVOFeed> query = new AVQuery<>("Feed");
         query.whereEqualTo("creator", user);
         query.include("labels");
+
+        if (notMe) {
+            query.whereEqualTo("isPublic", true);
+        }
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<AVOFeed>() {
             @Override

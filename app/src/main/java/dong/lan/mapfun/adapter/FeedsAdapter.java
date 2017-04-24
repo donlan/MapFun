@@ -19,7 +19,6 @@
 package dong.lan.mapfun.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +37,7 @@ import dong.lan.mapfun.R;
  * Created by 梁桂栋 on 2017/4/16.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
+ * 内容列表的适配器
  */
 
 public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> {

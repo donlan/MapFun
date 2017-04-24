@@ -38,6 +38,9 @@ import dong.lan.base.ui.base.Config;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.adapter.PartnerGuideAdapter;
 
+/**
+ * 所有发起协同导航的列表页面
+ */
 public class PartnerGuideActivity extends BaseBarActivity implements BaseItemClickListener<AVOGuide> {
 
     private RecyclerView partnerGuideList;

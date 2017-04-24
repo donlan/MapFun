@@ -35,6 +35,9 @@ import dong.lan.base.ui.BaseBarActivity;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.adapter.FriendsAdapter;
 
+/**
+ * 好友界面
+ */
 public class FriendsActivity extends BaseBarActivity implements BaseItemClickListener<AVOUser> {
 
     private RecyclerView friendsList;

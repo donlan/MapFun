@@ -27,6 +27,10 @@ import android.view.WindowManager;
 import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.mapfun.R;
 
+/**
+ * 闪屏页面
+ */
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override

@@ -38,6 +38,7 @@ import dong.lan.mapfun.R;
  * Created by 梁桂栋 on 2017/4/16.
  * Email: 760625325@qq.com
  * Github: github.com/donlan
+ * 好友列表适配器
  */
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {

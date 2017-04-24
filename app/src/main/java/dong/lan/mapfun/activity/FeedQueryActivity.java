@@ -34,6 +34,9 @@ import dong.lan.base.ui.customView.TagCloudView;
 import dong.lan.library.LabelTextView;
 import dong.lan.mapfun.R;
 
+/**
+ * 内容搜索界面
+ */
 public class FeedQueryActivity extends BaseBarActivity implements TagCloudView.OnTagClickListener {
 
 

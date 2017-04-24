@@ -31,8 +31,11 @@ import dong.lan.base.ui.BaseActivity;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.feature.presenter.ILoginPresenter;
 import dong.lan.mapfun.feature.view.ILoginView;
-import dong.lan.mapfun.presentation.LoginPresenter;
+import dong.lan.mapfun.mvp.presenter.LoginPresenter;
 
+/**
+ * 登录界面
+ */
 public class LoginActivity extends BaseActivity implements ILoginView {
 
     @BindView(R.id.login_password)

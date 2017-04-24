@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -135,9 +134,14 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         if(guide!=null){
             guide.deleteEventually();
             position = getIntent().getIntExtra("position",-1);
-            setResult(position);
             finish();
         }
+    }
+
+    @Override
+    public void finish() {
+        setResult(position);
+        super.finish();
     }
 
     private AVOGuide guide;
@@ -209,7 +213,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                         locConv.sendMessage(message, new AVIMConversationCallback() {
                             @Override
                             public void done(AVIMException e) {
-                                toast(""+e);
+                                toast("定位中 "+e);
                             }
                         });
                     }
@@ -294,7 +298,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                         overlay.zoomToSpan();
 
                     } else {
-                        Log.d("route result", "结果数<0");
+                        toast("结果数<0");
                         return;
                     }
                 }
@@ -329,14 +333,14 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
 
 
         //绘制目的地的marker
-        MapPinNumView dstPinView = new MapPinNumView(this,"目的他",0xffe67e22,14,0xffffffff);
+        MapPinNumView dstPinView = new MapPinNumView(this,"目的地",0xffe67e22,14,0xffffffff);
         destinationPin =  MapHelper.drawMarker(baiduMap,new LatLng(guide.getLocation().getLatitude(),
                 guide.getLocation().getLongitude()),
                 BitmapDescriptorFactory.fromView(dstPinView));
         destinationPin.setDraggable(false);
 
         //绘制对方的marker
-        MapPinNumView otherView = new MapPinNumView(this,"目的他",0xffe67e22,14,0xffffffff);
+        MapPinNumView otherView = new MapPinNumView(this,"对方",0xffe67e22,14,0xffffffff);
         otherPin =  MapHelper.drawMarker(baiduMap,new LatLng(other.getLastLocation().getLatitude()
                         ,other.getLastLocation().getLatitude()),
                 BitmapDescriptorFactory.fromView(otherView));

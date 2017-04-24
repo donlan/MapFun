@@ -30,8 +30,11 @@ import dong.lan.base.ui.BaseActivity;
 import dong.lan.mapfun.R;
 import dong.lan.mapfun.feature.presenter.IRegisterPresenter;
 import dong.lan.mapfun.feature.view.IRegisterView;
-import dong.lan.mapfun.presentation.RegisterPresenter;
+import dong.lan.mapfun.mvp.presenter.RegisterPresenter;
 
+/**
+ * 注册页面
+ */
 public class RegisterActivity extends BaseActivity implements IRegisterView {
 
     @BindView(R.id.register_password)

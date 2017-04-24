@@ -16,17 +16,19 @@
  *   Email me: stonelavender@hotmail.com
  */
 
-package dong.lan.mapfun.presentation;
+package dong.lan.mapfun.mvp.presenter;
 
 import android.content.Intent;
 import android.text.TextUtils;
 
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.SignUpCallback;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 
 import dong.lan.avoscloud.bean.AVOUser;
-import dong.lan.mapfun.feature.presenter.IRegisterPresenter;
-import dong.lan.mapfun.feature.view.IRegisterView;
+import dong.lan.mapfun.activity.MainActivity;
+import dong.lan.mapfun.feature.presenter.ILoginPresenter;
+import dong.lan.mapfun.feature.view.ILoginView;
 
 /**
  * Created by 梁桂栋 on 2017/4/12.
@@ -34,16 +36,16 @@ import dong.lan.mapfun.feature.view.IRegisterView;
  * Github: github.com/donlan
  */
 
-public class RegisterPresenter implements IRegisterPresenter {
+public class LoginPresenter implements ILoginPresenter {
 
-    private IRegisterView view;
+    private ILoginView view;
 
-    public RegisterPresenter(IRegisterView view) {
+    public LoginPresenter(ILoginView view) {
         this.view = view;
     }
 
     @Override
-    public void register(final String username, final String password) {
+    public void login(String username, String password) {
         if (TextUtils.isEmpty(username)) {
             view.toast("用户名不能为空");
             return;
@@ -52,29 +54,22 @@ public class RegisterPresenter implements IRegisterPresenter {
             view.toast("密码长度为6到16为数字字母组合");
             return;
         }
-        AVOUser user = new AVOUser();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setSex(-1);
-        user.setLastLocation(0, 0);
-        user.setNickname("");
-        user.setAvatar(null);
-        user.signUpInBackground(new SignUpCallback() {
+
+        AVOUser.logInInBackground(username, password, new LogInCallback<AVUser>() {
             @Override
-            public void done(AVException e) {
+            public void done(AVUser avUser, AVException e) {
                 if (e == null) {
-                    view.toast("即将为你自动登录");
-                    Intent intent = new Intent();
-                    intent.putExtra("password", password);
-                    intent.putExtra("username", username);
-                    view.activity().setResult(1, intent);
+                    view.toast("欢迎你回来");
+                    view.activity().startActivity(new Intent(view.activity(), MainActivity.class));
                     view.activity().finish();
                 } else {
-                    e.printStackTrace();
-                    view.dialog("注册失败，错误码：" + e.getCode());
+                    if (e.getCode() == 211) {
+                        view.dialog("登录失败，该用户不存在");
+                    } else {
+                        view.dialog("登录失败，错误码：" + e.getCode());
+                    }
                 }
             }
         });
-
     }
 }
