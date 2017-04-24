@@ -77,6 +77,11 @@ public class FavoriteFeedsAdapter extends RecyclerView.Adapter<FavoriteFeedsAdap
         return feeds == null ? 0 : feeds.size();
     }
 
+    public void remove(int position) {
+        feeds.remove(position);
+        notifyItemRemoved(position);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         LabelTextView labels;

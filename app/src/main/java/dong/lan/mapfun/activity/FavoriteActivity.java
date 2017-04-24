@@ -41,6 +41,7 @@ public class FavoriteActivity extends BaseBarActivity implements BaseItemClickLi
 
     private RecyclerView favoriteFeedList;
     private AVOUser user;
+    private FavoriteFeedsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,8 @@ public class FavoriteActivity extends BaseBarActivity implements BaseItemClickLi
                     if (list == null || list.isEmpty()) {
                         toast("无收藏");
                     } else {
-                        favoriteFeedList.setAdapter(new FavoriteFeedsAdapter(list, FavoriteActivity.this));
+                        adapter = new FavoriteFeedsAdapter(list, FavoriteActivity.this);
+                        favoriteFeedList.setAdapter(adapter);
                     }
                 } else {
                     dialog("获取收藏失败，错误码：" + e.getCode());
@@ -83,7 +85,7 @@ public class FavoriteActivity extends BaseBarActivity implements BaseItemClickLi
     public void onClick(AVOFeed data, int action, int position) {
         if (action == 1) {
             data.removeLike(user);
-            favoriteFeedList.getAdapter().notifyItemRemoved(position);
+            adapter.remove(position);
         } else if (action == 0) {
             Intent intent = new Intent(this, FeedDetailActivity.class);
             intent.putExtra("feed", data.toString());

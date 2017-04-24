@@ -26,6 +26,7 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.blankj.ALog;
 
 import dong.lan.avoscloud.ModelConfig;
 import dong.lan.avoscloud.bean.AVOUser;
@@ -79,6 +80,7 @@ public class App extends Application {
         LocationService.service().init(this);
         ModelConfig.init(this);
         SPHelper.instance().init(this,"");
+        new ALog.Builder(this);
 
     }
 }
