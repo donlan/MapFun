@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         AVOUser user = AVOUser.getCurrentUser();
         isShare = user.isShareLocation();
-        shareLocationLtv.setText("共享位置："+(isShare?"开":"关"));
+        shareLocationLtv.setText("共享位置：" + (isShare ? "开" : "关"));
         Glide.with(this).load(user.getAvatar() == null ? "" : user.getAvatar().getUrl())
                 .error(R.drawable.head)
                 .into(avatar);
@@ -264,7 +264,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.shareLocation:
                 isShare = !isShare;
-                shareLocationLtv.setText("共享位置："+(isShare?"开":"关"));
+                shareLocationLtv.setText("共享位置：" + (isShare ? "开" : "关"));
                 presenter.saveShareLocation(isShare);
                 break;
         }
@@ -272,6 +272,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void showNearUser(List<AVOUser> users) {
+        if (!users.isEmpty())
+            baiduMap.clear();
         for (AVOUser user : users) {
             View view = LayoutInflater.from(this).inflate(R.layout.map_user_head_pin, null);
             PinCircleImageView pin = (PinCircleImageView) view.findViewById(R.id.pin_user_head);
@@ -295,6 +297,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void showNearFeed(List<AVOFeed> feeds) {
+        if (!feeds.isEmpty())
+            baiduMap.clear();
         for (AVOFeed feed : feeds) {
 
             Marker marker = MapHelper.drawMarker(baiduMap,
