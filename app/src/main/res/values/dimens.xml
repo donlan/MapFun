@@ -19,4 +19,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="new_feed_tab_margin">20dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="dp_4">4dp</dimen>
 </resources>

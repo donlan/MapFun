@@ -19,7 +19,9 @@
 
 package dong.lan.mapfun;
 
-import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
@@ -40,7 +42,7 @@ import dong.lan.mapfun.im.IMMessageHandler;
  * Github: github.com/donlan
  */
 
-public class App extends Application {
+public class App extends MultiDexApplication {
     private static App app;
     private AVIMClient avimClient;
 
@@ -73,6 +75,13 @@ public class App extends Application {
                     }
                 });
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
