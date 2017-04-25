@@ -53,7 +53,7 @@ public class SPHelper {
     public void putString(String key, String val) {
         if (key == null || val == null)
             return;
-        preferences.edit().putString(key, val).apply();
+        preferences.edit().putString(key, val).commit();
     }
 
     public void putInt(String key, int val) {
