@@ -63,7 +63,7 @@ public class LoginPresenter implements ILoginPresenter {
             @Override
             public void done(AVUser avUser, AVException e) {
                 AVQuery<AVOUser> query = new AVQuery<AVOUser>("MyUser");
-                query.whereEqualTo("user",query);
+                query.whereEqualTo("user",avUser);
                 query.include("user");
                 query.findInBackground(new FindCallback<AVOUser>() {
                     @Override
