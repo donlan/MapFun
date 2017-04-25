@@ -30,7 +30,7 @@ dependencies {
     compile project(":map")
     compile project(":RTPermission")
     compile project(":im")
-    compile 'com.android.support:multidex:'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
