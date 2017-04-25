@@ -158,6 +158,7 @@ public class AVOUser extends AVObject {
     }
 
     public static void logOut() {
+        user = null;
         AVUser.logOut();
         SPHelper.instance().putString("user","");
     }
