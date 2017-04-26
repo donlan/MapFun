@@ -54,6 +54,16 @@ public class AVOGuide extends AVObject {
         super.put("creator", user);
     }
 
+
+    public String getConvId() {
+        return getString("conv");
+    }
+
+    public void setConv(String conv) {
+        put("conv", conv);
+    }
+
+
     public void setLocation(double latitude, double longitude) {
         put("location", new AVGeoPoint(latitude, longitude));
     }
