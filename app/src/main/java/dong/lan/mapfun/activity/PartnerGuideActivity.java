@@ -69,6 +69,10 @@ public class PartnerGuideActivity extends BaseBarActivity implements BaseItemCli
     private void init() {
         AVQuery<AVOGuide> query = new AVQuery<>("Guide");
         query.include("partner");
+        query.include("partner.user");
+        query.include("partner.MyUser.user");
+        query.include("MyUser.user");
+        query.include("user");
         query.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereNotEqualTo("status", Config.GUIDE_STATUS_FINISH);
         query.whereContainedIn("partner", Collections.singleton(user));

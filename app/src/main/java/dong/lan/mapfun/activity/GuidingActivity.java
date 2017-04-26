@@ -39,9 +39,8 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.clusterutil.ui.RouteLineAdapter;
@@ -64,8 +63,9 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.blankj.ALog;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import dong.lan.avoscloud.bean.AVOGuide;
@@ -75,6 +75,7 @@ import dong.lan.base.ui.customView.MapPinNumView;
 import dong.lan.library.LabelTextView;
 import dong.lan.map.service.LocationService;
 import dong.lan.map.utils.MapHelper;
+import dong.lan.mapfun.App;
 import dong.lan.mapfun.R;
 
 /**
@@ -131,6 +132,21 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
      */
     private void finishGuiding() {
         if(guide!=null){
+            //结束并退出临时会话
+            if(locConv!=null){
+                locConv.kickMembers(Collections.singletonList(other.getObjectId()), new AVIMConversationCallback() {
+                    @Override
+                    public void done(AVIMException e) {
+                        locConv.quit(new AVIMConversationCallback() {
+                            @Override
+                            public void done(AVIMException e) {
+
+                            }
+                        });
+                    }
+                });
+
+            }
             guide.deleteEventually();
             position = getIntent().getIntExtra("position",-1);
             finish();
@@ -212,7 +228,8 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                         locConv.sendMessage(message, new AVIMConversationCallback() {
                             @Override
                             public void done(AVIMException e) {
-                                toast("定位中 "+e);
+                                if(e!=null)
+                                    e.printStackTrace();
                             }
                         });
                     }
@@ -231,10 +248,16 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         option.from(sNode);
         option.to(eNode);
         planSearch.walkingSearch(new WalkingRoutePlanOption());
+
     }
 
 
     private void prepare(AVOGuide guide) {
+
+        if(AVOUser.getCurrentUser().getObjectId().equals(guide.getCreator().getObjectId())){
+            finishGuiding.setVisibility(View.VISIBLE);
+        }
+
         LocationService.service().registerCallback(this,locationCallback);
 
         List<AVOUser> userList = guide.getPartner();
@@ -255,6 +278,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                 }
                 if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
                     //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+                    ALog.d(result);
                     result.getSuggestAddrInfo() ;
                     return;
                 }
@@ -286,6 +310,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                             myTransitDlg.show();
                             hasShownDialogue = true;
                         }
+                        ALog.d(result);
                     } else if (result.getRouteLines().size() == 1) {
                         // 直接显示
                         result.getRouteLines().get(0);
@@ -295,7 +320,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                         overlay.setData(result.getRouteLines().get(0));
                         overlay.addToMap();
                         overlay.zoomToSpan();
-
+                        ALog.d(result);
                     } else {
                         toast("结果数<0");
                         return;
@@ -338,41 +363,27 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                 BitmapDescriptorFactory.fromView(dstPinView));
         destinationPin.setDraggable(false);
 
-        //绘制对方的marker
-        MapPinNumView otherView = new MapPinNumView(this,"对方",0xffe67e22,14,0xffffffff);
-        otherPin =  MapHelper.drawMarker(baiduMap,new LatLng(other.getLastLocation().getLatitude()
-                        ,other.getLastLocation().getLatitude()),
-                BitmapDescriptorFactory.fromView(otherView));
-        otherPin.setDraggable(false);
 
 
         //创建临时会话，并通过该会话发送发送位置信息
 
-        final String pair = me.getObjectId()+""+other.getObjectId();
-        AVIMClient tom = AVIMClient.getInstance(AVOUser.getCurrentUser().getObjectId());
-        tom.open(new AVIMClientCallback(){
-
-            @Override
-            public void done(AVIMClient client,AVIMException e){
-                if(e==null){
-                    //登录成功
-                    client.createConversation(Arrays.asList(me.getObjectId(),other.getObjectId()),
-                           pair,null,true,
-                            new AVIMConversationCreatedCallback(){
-                                @Override
-                                public void done(AVIMConversation conv,AVIMException e){
-                                    if(e == null){
-                                        locConv = conv;
-                                    }else{
-                                        toast("创建通信信道失败");
-                                    }
-                                }
-                            });
-                }else{
-                    toast("创建会话失败");
-                }
-            }
-        });
+        App.myApp().getAvimClient().getQuery()
+                .whereEqualTo("objectId",guide.getConvId())
+                .findInBackground(new AVIMConversationQueryCallback() {
+                    @Override
+                    public void done(List<AVIMConversation> list, AVIMException e) {
+                        if(list==null || list.isEmpty()){
+                            toast("无效会话通道");
+                        }else {
+                            if (e == null) {
+                                locConv = list.get(0);
+                                ALog.d(locConv);
+                            } else {
+                                toast("创建通信信道失败");
+                            }
+                        }
+                    }
+                });
     }
 
 
@@ -394,14 +405,14 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         mapView.onResume();
         if(myMessageHandler == null)
             myMessageHandler = new MyMessageHandler();
-        AVIMMessageManager.registerMessageHandler(AVIMLocationMessage.class,myMessageHandler);
+        AVIMMessageManager.registerMessageHandler(AVIMMessage.class,myMessageHandler);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mapView.onPause();
-        AVIMMessageManager.unregisterMessageHandler(AVIMLocationMessage.class,myMessageHandler);
+        AVIMMessageManager.unregisterMessageHandler(AVIMMessage.class,myMessageHandler);
     }
 
 
@@ -412,10 +423,19 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                 if(message instanceof AVIMLocationMessage){
                     AVIMLocationMessage locMsg = (AVIMLocationMessage) message;
                     AVGeoPoint point = locMsg.getLocation();
+
+                    if(otherPin == null){
+                        //绘制对方的marker
+                        MapPinNumView otherView = new MapPinNumView(GuidingActivity.this,"对方",0xffe67e22,14,0xffffffff);
+                        otherPin =  MapHelper.drawMarker(baiduMap,new LatLng(other.getLastLocation().getLatitude()
+                                        ,other.getLastLocation().getLatitude()),
+                                BitmapDescriptorFactory.fromView(otherView));
+                        otherPin.setDraggable(false);
+                    }
+
                     otherPin.setPosition(new LatLng(point.getLatitude(),point.getLongitude()));
                 }
             }
-            toast("->"+message.getContent());
             super.onMessage(message, avimConversation, client);
         }
     }
@@ -436,15 +456,7 @@ public class GuidingActivity extends BaseActivity implements BaiduMap.OnMarkerCl
 
         planSearch.destroy();
 
-        //结束并退出临时会话
-        if(locConv!=null){
-            locConv.quit(new AVIMConversationCallback() {
-                @Override
-                public void done(AVIMException e) {
 
-                }
-            });
-        }
         if(LocationService.service().getLastLocation()!=null){
             me.setLastLocation(LocationService.service().getLastLocation().getLatitude(),
                     LocationService.service().getLastLocation().getLongitude());

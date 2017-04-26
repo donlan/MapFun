@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~   Copyright 2016, donlan(梁桂栋)
   ~
   ~   Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,19 +30,20 @@
 
     <dong.lan.library.LabelTextView
         android:id="@+id/finish_guiding"
-        app:radius="25dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:textSize="18sp"
-        app:shadowRadius="4dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:gravity="center"
         android:shadowColor="@color/colorAccent"
         android:text="结束协同导航"
-        app:bg_color="@color/colorAccent"
         android:textColor="@color/white"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:bg_color="@color/colorAccent"
+        app:radius="25dp"
+        app:shadowRadius="4dp" />
 
 </RelativeLayout>

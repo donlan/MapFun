@@ -168,7 +168,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
             }
             setUpView(user);
         } else if (!TextUtils.isEmpty(objId)) {
-            AVQuery<AVOUser> query = new AVQuery<>("_User");
+            AVQuery<AVOUser> query = new AVQuery<>("MyUser");
             query.getInBackground(objId, new GetCallback<AVOUser>() {
                 @Override
                 public void done(AVOUser avUser, AVException e) {

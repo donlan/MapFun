@@ -61,9 +61,9 @@ public class PartnerGuideAdapter extends RecyclerView.Adapter<PartnerGuideAdapte
         AVOGuide guide = guides.get(position);
         StringBuilder sb = new StringBuilder();
         sb.append("协同用户： ");
-        for (AVOUser label : guide.getPartner()) {
+        for (AVOUser user : guide.getPartner()) {
             sb.append("#");
-            sb.append(label.getCreator().getUsername());
+            sb.append(user.getCreator().getUsername());
             sb.append("  ");
         }
         holder.users.setText(sb.toString());
@@ -75,10 +75,10 @@ public class PartnerGuideAdapter extends RecyclerView.Adapter<PartnerGuideAdapte
         return guides == null ? 0 : guides.size();
     }
 
-    public void remove(int resultCode) {
-        if (resultCode >= 0 && resultCode < getItemCount()) {
-            guides.remove(resultCode);
-            notifyItemRemoved(resultCode);
+    public void remove(int position) {
+        if (position >= 0 && position < getItemCount()) {
+            guides.remove(position);
+            notifyItemRemoved(position);
         }
     }
 

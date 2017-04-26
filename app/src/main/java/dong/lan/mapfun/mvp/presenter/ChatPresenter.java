@@ -136,20 +136,33 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     private void createPartnerGuide(final double latitude, final double longitude, final String address) {
 
-        AVOUser me = AVOUser.getCurrentUser();
-        AVOGuide avoGuide = new AVOGuide();
-        avoGuide.setCreator(me);
-        avoGuide.setAddress(address);
-        avoGuide.setStatus(dong.lan.base.ui.base.Config.GUIDE_STATUS_CREATED);
-        avoGuide.setLocation(latitude, longitude);
-        avoGuide.setPartner(Arrays.asList(me, targetUser));
-        avoGuide.saveEventually(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
 
-                } else {
-                    view.dialog("创建会话失败，错误码：" + e.getCode());
+        App.myApp().getAvimClient().createConversation(conversation.getMembers(), "guide:"+conversation.getName(), null, false, true, new AVIMConversationCreatedCallback() {
+            @Override
+            public void done(AVIMConversation avimConversation, AVIMException e) {
+                if(e == null){
+                    AVOUser me = AVOUser.getCurrentUser();
+                    AVOGuide avoGuide = new AVOGuide();
+                    avoGuide.setConv(avimConversation.getConversationId());
+                    avoGuide.setCreator(me);
+                    avoGuide.setAddress(address);
+                    avoGuide.setStatus(dong.lan.base.ui.base.Config.GUIDE_STATUS_CREATED);
+                    avoGuide.setLocation(latitude, longitude);
+                    avoGuide.setPartner(Arrays.asList(me, targetUser));
+                    avoGuide.saveEventually(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (e == null) {
+                                view.toast("创建成功");
+                            } else {
+                                e.printStackTrace();
+                                view.dialog("创建协同导航失败，错误码：" + e.getCode());
+                            }
+                        }
+                    });
+                }else{
+                    e.printStackTrace();
+                    view.dialog("创建协同导航失败，错误码：" + e.getCode());
                 }
             }
         });
@@ -158,7 +171,6 @@ public class ChatPresenter implements ChatContract.Presenter {
     //创建聊天会话
     private void init() {
         view.initView(targetUser.getUserName());
-
         AVOUser me = AVOUser.getCurrentUser();
         App.myApp().getAvimClient().createConversation(Arrays.asList(me.getObjectId(), targetUser.getObjectId()),
                 me.getUserName() + "&" + targetUser.getUserName(),

@@ -67,6 +67,11 @@ public class PickLocationActivity extends AppCompatActivity {
     private static final String TAG = PickLocationActivity.class.getSimpleName();
 
     void back() {
+        finish();
+    }
+
+    @Override
+    public void finish() {
         double lat = 0;
         double lng = 0;
         if (pickMarker != null) {
@@ -80,7 +85,7 @@ public class PickLocationActivity extends AppCompatActivity {
         locData.putExtra(Config.LONGITUDE, lng);
         locData.putExtra(Config.LOC_ADDRESS, locationText.getText().toString());
         setResult(Config.RESULT_LOCATION, locData);
-        finish();
+        super.finish();
     }
 
     private void toast(String text) {

@@ -102,7 +102,7 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         query.whereWithinKilometers("lastLocation", point, 10);
         query.limit(100);
         query.include("user");
-        //query.whereEqualTo("shareLoc",true);
+        query.whereEqualTo("shareLoc",true);
         query.whereNotEqualTo("objectId",AVOUser.getCurrentUser().getObjectId());
         query.findInBackground(new FindCallback<AVOUser>() {
             @Override

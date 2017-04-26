@@ -138,17 +138,19 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
             address = data.getStringExtra(Config.LOC_ADDRESS);
             latitude = data.getDoubleExtra(Config.LATITUDE, 0);
             longitude = data.getDoubleExtra(Config.LONGITUDE, 0);
-            new Dialog(this)
-                    .setMessageText("确定发起协同定位导航？")
-                    .setClickListener(new Dialog.DialogClickListener() {
-                        @Override
-                        public boolean onDialogClick(int which) {
-                            if (which == Dialog.CLICK_RIGHT) {
-                                presenter.newGuide(latitude, longitude, address);
+            if(latitude!=0 && longitude!=0) {
+                new Dialog(this)
+                        .setMessageText("确定发起协同定位导航？")
+                        .setClickListener(new Dialog.DialogClickListener() {
+                            @Override
+                            public boolean onDialogClick(int which) {
+                                if (which == Dialog.CLICK_RIGHT) {
+                                    presenter.newGuide(latitude, longitude, address);
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    }).show();
+                        }).show();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
