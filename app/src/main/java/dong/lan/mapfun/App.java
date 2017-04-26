@@ -89,7 +89,7 @@ public class App extends MultiDexApplication {
         LocationService.service().init(this);
         ModelConfig.init(this);
         SPHelper.instance().init(this,"");
-        new ALog.Builder(this);
+        new ALog.Builder(this).setGlobalTag("DOOZE");
 
     }
 }
