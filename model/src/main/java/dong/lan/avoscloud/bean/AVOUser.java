@@ -30,11 +30,6 @@ import com.avos.avoscloud.SaveCallback;
 
 import dong.lan.base.utils.SPHelper;
 
-/**
- * Created by 梁桂栋 on 2017/4/12.
- * Email: 760625325@qq.com
- * Github: github.com/donlan
- */
 @AVClassName("MyUser")
 public class AVOUser extends AVObject {
 

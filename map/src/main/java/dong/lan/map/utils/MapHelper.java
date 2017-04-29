@@ -16,10 +16,6 @@ import com.baidu.mapapi.model.LatLng;
 import java.util.List;
 
 /**
- * Created by 梁桂栋 on 17-2-15 ： 下午8:51.
- * Email:       760625325@qq.com
- * GitHub:      github.com/donlan
- * description: SmartTrip
  */
 
 public final class MapHelper {
