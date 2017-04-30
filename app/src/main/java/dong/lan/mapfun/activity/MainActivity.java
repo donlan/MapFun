@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         menuView.findViewById(R.id.partner_guide).setOnClickListener(this);
         menuView.findViewById(R.id.logout).setOnClickListener(this);
         menuView.findViewById(R.id.friends).setOnClickListener(this);
-        usernameTv = (TextView) findViewById(R.id.username);
+        usernameTv = (TextView) menuView.findViewById(R.id.username);
         avatar = (CircleImageView) menuView.findViewById(R.id.user_avatar);
         avatar.setOnClickListener(this);
         slidingRootNav = new SlidingRootNavBuilder(this)
