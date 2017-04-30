@@ -171,7 +171,7 @@ public class ChatActivity extends BaseBarActivity implements View.OnClickListene
     @Override
     public void showMessage(List<AVIMMessage> list) {
         adapter.newMessage(list);
-        chatList.scrollToPosition(list.size());
+        chatList.scrollToPosition(chatList.getAdapter().getItemCount() - 1);
     }
 
     @Override
