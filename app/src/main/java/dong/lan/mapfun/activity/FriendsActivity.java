@@ -38,7 +38,7 @@ public class FriendsActivity extends BaseBarActivity implements BaseItemClickLis
 
         AVOUser avoUser = AVOUser.getCurrentUser();
         AVQuery<AVOUser> query = new AVQuery<>("MyUser");
-        query.whereEqualTo("friends",avoUser);
+        query.whereEqualTo("friends", avoUser);
         query.include("user");
         query.findInBackground(new FindCallback<AVOUser>() {
             @Override
@@ -65,4 +65,5 @@ public class FriendsActivity extends BaseBarActivity implements BaseItemClickLis
         intent.putExtra("userSeq", data.toString());
         startActivity(intent);
     }
+
 }
