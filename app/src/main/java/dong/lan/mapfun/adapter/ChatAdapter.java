@@ -45,8 +45,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             messages = new ArrayList<>();
         }
         messages.add(message);
-        //notifyItemInserted(messages.size() - 1);
-        notifyDataSetChanged();
+        notifyItemInserted(messages.size() - 1);
     }
 
     public void newMessage(List<AVIMMessage> message) {
@@ -58,8 +57,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             s = 0;
         messages.addAll(message);
         int e = messages.size() - 1;
-        //notifyItemRangeInserted(s, e);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(s, e);
     }
 
 
