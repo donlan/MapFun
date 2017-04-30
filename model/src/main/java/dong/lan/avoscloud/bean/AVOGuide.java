@@ -44,6 +44,15 @@ public class AVOGuide extends AVObject {
     }
 
 
+    public String getPartnerInfo() {
+        return getString("partnerInfo");
+    }
+
+    public void setPartnerInfo(String info) {
+        put("partnerInfo", info);
+    }
+
+
     public void setLocation(double latitude, double longitude) {
         put("location", new AVGeoPoint(latitude, longitude));
     }
