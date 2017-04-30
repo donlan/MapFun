@@ -238,8 +238,11 @@ public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnT
                                     @Override
                                     public void done(Integer integer) {
                                         alert("图片上传中："+integer);
-                                        if(integer>=100)
+                                        if(integer>=100) {
                                             dismiss();
+                                            toast("发布成功");
+                                            finish();
+                                        }
                                     }
                                 });
                             }catch (Exception ep){
@@ -248,6 +251,8 @@ public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnT
                         }
                     }else {
                         dismiss();
+                        toast("发布成功");
+                        finish();
                     }
                 } else {
                     dismiss();
