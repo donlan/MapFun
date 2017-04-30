@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import dong.lan.avoscloud.bean.AVOGuide;
-import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.base.BaseItemClickListener;
 import dong.lan.mapfun.R;
 
@@ -39,14 +38,9 @@ public class PartnerGuideAdapter extends RecyclerView.Adapter<PartnerGuideAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         AVOGuide guide = guides.get(position);
-        StringBuilder sb = new StringBuilder();
-        sb.append("协同用户： ");
-        for (AVOUser user : guide.getPartner()) {
-            sb.append("#");
-            sb.append(user.getCreator().getUsername());
-            sb.append("  ");
-        }
-        holder.users.setText(sb.toString());
+        String sb = "协同用户： " +
+                guide.getPartnerInfo();
+        holder.users.setText(sb);
         holder.address.setText(guide.getAddress());
     }
 
