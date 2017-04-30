@@ -37,7 +37,8 @@ public class FriendsActivity extends BaseBarActivity implements BaseItemClickLis
         friendsList.setLayoutManager(new GridLayoutManager(this, 1));
 
         AVOUser avoUser = AVOUser.getCurrentUser();
-        AVQuery<AVOUser> query = avoUser.getFriends().getQuery();
+        AVQuery<AVOUser> query = new AVQuery<>("MyUser");
+        query.whereEqualTo("friends",avoUser);
         query.include("user");
         query.findInBackground(new FindCallback<AVOUser>() {
             @Override
