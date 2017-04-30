@@ -18,6 +18,8 @@
 
 package dong.lan.avoscloud.bean;
 
+import android.text.TextUtils;
+
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
@@ -141,7 +143,7 @@ public class AVOUser extends AVObject {
         if (user == null) {
             String str = SPHelper.instance().getString("user");
             try {
-                user =(AVOUser) AVObject.parseAVObject(str);
+                user = (AVOUser) AVObject.parseAVObject(str);
                 return user;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,6 +157,13 @@ public class AVOUser extends AVObject {
     public static void logOut() {
         user = null;
         AVUser.logOut();
-        SPHelper.instance().putString("user","");
+        SPHelper.instance().putString("user", "");
+    }
+
+    public String getDisplayName() {
+        if (TextUtils.isEmpty(nickname())) {
+            return getUserName();
+        }
+        return nickname();
     }
 }
