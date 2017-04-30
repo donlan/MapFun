@@ -26,6 +26,7 @@ import dong.lan.avoscloud.bean.AVOGuide;
 import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.mapfun.App;
 import dong.lan.mapfun.mvp.contract.ChatContract;
+import dong.lan.mapfun.uitls.StringUtils;
 
 /**
  */
@@ -87,6 +88,14 @@ public class ChatPresenter implements ChatContract.Presenter {
             view.toast("无效的会话");
             return;
         }
+        if(latitude == 0 || longitude == 0){
+            view.toast("无效位置信息，请从地图中选择一个位置");
+            return;
+        }
+        if(TextUtils.isEmpty(address)){
+            view.toast("位置描述为空，请从地图中选择一个位置");
+            return;
+        }
         Map<String, Object> info = new HashMap<>(1);
         info.put("type", "guide");
         final AVIMLocationMessage locationMessage = new AVIMLocationMessage();
@@ -126,6 +135,7 @@ public class ChatPresenter implements ChatContract.Presenter {
                     avoGuide.setConv(avimConversation.getConversationId());
                     avoGuide.setCreator(me);
                     avoGuide.setAddress(address);
+                    avoGuide.setPartnerInfo(StringUtils.partnerInfo(me,targetUser));
                     avoGuide.setStatus(dong.lan.base.ui.base.Config.GUIDE_STATUS_CREATED);
                     avoGuide.setLocation(latitude, longitude);
                     avoGuide.setPartner(Arrays.asList(me, targetUser));
