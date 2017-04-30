@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ImageView addFeedIv;
     private ImageView feedSearchIv;
     private ImageView barLeft;
+    private TextView usernameTv;
     private CircleImageView avatar;
     private LabelTextView shareLocationLtv;
     private BaiduMap baiduMap;
@@ -103,6 +105,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         menuView.findViewById(R.id.partner_guide).setOnClickListener(this);
         menuView.findViewById(R.id.logout).setOnClickListener(this);
         menuView.findViewById(R.id.friends).setOnClickListener(this);
+        usernameTv = (TextView) findViewById(R.id.username);
         avatar = (CircleImageView) menuView.findViewById(R.id.user_avatar);
         avatar.setOnClickListener(this);
         slidingRootNav = new SlidingRootNavBuilder(this)
@@ -153,6 +156,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 .error(R.drawable.head)
                 .into(avatar);
 
+        usernameTv.setText(user.getDisplayName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

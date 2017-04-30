@@ -47,6 +47,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
     private TextView userFollowerTv;
     private RecyclerView feedListView;
     private CircleImageButton userActionIb;
+    private TextView usernameTv;
     private String userSeq;
     private AVOUser user;
     private int follower = 0;
@@ -84,6 +85,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
         userFollowerTv = (TextView) findViewById(R.id.user_focus);
         feedListView = (RecyclerView) findViewById(R.id.user_fees_list);
         userActionIb = (CircleImageButton) findViewById(R.id.user_action);
+        usernameTv = (TextView) findViewById(R.id.username);
         feedListView.setLayoutManager(new GridLayoutManager(this, 1));
         userActionIb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +120,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
         } else {
             //关注其他用户
             user.addFriend(AVOUser.getCurrentUser());
-            userFollowerTv.setText((follower+1) + " 个关注者");
+            userFollowerTv.setText((follower + 1) + " 个关注者");
         }
     }
 
@@ -194,7 +196,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
         Glide.with(this).load(user.getAvatar() == null ? "" : user.getAvatar().getUrl())
                 .error(R.drawable.head)
                 .into(avatar);
-
+        usernameTv.setText(user.getDisplayName());
         notMe = !user.getObjectId().equals(AVOUser.getCurrentUser().getObjectId());
 
         AVQuery<AVOFeed> query = new AVQuery<>("Feed");
