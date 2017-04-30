@@ -17,6 +17,16 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/head" />
 
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@id/user_avatar"
+        android:textColor="@color/main_text_color"
+        android:textSize="16sp" />
+
 
     <dong.lan.library.LabelTextView
         android:id="@+id/logout"
@@ -109,7 +119,6 @@
                 app:bg_color="@color/logout_color"
                 app:radius="25dp"
                 app:strokeWidth="1dp" />
-
 
 
             <dong.lan.library.LabelTextView

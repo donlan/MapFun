@@ -12,8 +12,6 @@ import dong.lan.avoscloud.bean.AVOFeedImage;
 import dong.lan.avoscloud.bean.AVOGuide;
 import dong.lan.avoscloud.bean.AVOLabel;
 import dong.lan.avoscloud.bean.AVOUser;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 
 
@@ -30,11 +28,11 @@ public final class ModelConfig {
         AVObject.registerSubclass(AVOUser.class);
         AVOSCloud.initialize(appContext, API_ID, API_KEY);
         AVOSCloud.setDebugLogEnabled(true);
-        Realm.init(appContext);
-        RealmConfiguration configuration = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded()
-                .name("mapfun")
-                .build();
-        Realm.setDefaultConfiguration(configuration);
+        //Realm.init(appContext);
+//        RealmConfiguration configuration = new RealmConfiguration.Builder()
+//                .deleteRealmIfMigrationNeeded()
+//                .name("mapfun")
+//                .build();
+//        Realm.setDefaultConfiguration(configuration);
     }
 }

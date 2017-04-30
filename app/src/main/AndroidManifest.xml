@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dong.lan.mapfun">
-
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -53,6 +53,7 @@
         <activity android:name=".activity.ChatActivity" />
         <activity android:name=".activity.PartnerGuideActivity" />
         <activity android:name=".activity.GuidingActivity"></activity>
+        <activity android:name=".activity.BNDemoGuideActivity"/>
     </application>
 
 </manifest>
