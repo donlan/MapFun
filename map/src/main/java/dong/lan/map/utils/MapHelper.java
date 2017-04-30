@@ -12,7 +12,9 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.route.WalkingRouteLine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -169,6 +171,16 @@ public final class MapHelper {
             return;
         PolylineOptions polylineOptions = new PolylineOptions().width(10).
                 points(points).color(0xffE8484B);
+        baiduMap.addOverlay(polylineOptions);
+    }
+
+    public static void drawRouteLine(BaiduMap baiduMap, WalkingRouteLine walkingRouteLine) {
+        List<LatLng> ps = new ArrayList<>(walkingRouteLine.getAllStep().size());
+        for(WalkingRouteLine.WalkingStep step : walkingRouteLine.getAllStep()){
+            ps.add(step.getEntrance().getLocation());
+        }
+        PolylineOptions polylineOptions = new PolylineOptions().width(10).
+                points(ps).color(0xffE8484B);
         baiduMap.addOverlay(polylineOptions);
     }
 }
