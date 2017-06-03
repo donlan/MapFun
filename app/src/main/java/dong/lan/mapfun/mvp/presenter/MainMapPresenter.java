@@ -16,6 +16,7 @@ import java.util.List;
 import dong.lan.avoscloud.bean.AVOFeed;
 import dong.lan.avoscloud.bean.AVOLabel;
 import dong.lan.avoscloud.bean.AVOUser;
+import dong.lan.base.ui.base.Config;
 import dong.lan.map.service.LocationService;
 import dong.lan.mapfun.App;
 import dong.lan.mapfun.activity.FeedDetailActivity;
@@ -37,8 +38,8 @@ public class MainMapPresenter implements MainMapContract.Presenter {
     public void saveUserLocation() {
         App.myApp().getLocationService().unregisterCallback(this);
         BDLocation point = App.myApp().getLocationService().getLastLocation();
-        if (point != null) {
-            AVOUser user = AVOUser.getCurrentUser();
+        AVOUser user = AVOUser.getCurrentUser();
+        if (point != null && user != null) {
             user.setLastLocation(point.getLatitude(), point.getLongitude());
             user.saveEventually();
         }
@@ -51,10 +52,10 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         AVGeoPoint point = new AVGeoPoint();
         point.setLatitude(location.getLatitude());
         point.setLongitude(location.getLongitude());
-        query.whereWithinKilometers("location", point, 10);
+        query.whereWithinKilometers("location", point, Config.RADIUS);
         query.limit(100);
         query.include("labels");
-        query.whereEqualTo("isPublic", true);
+        //query.whereEqualTo("isPublic", true);
         query.findInBackground(new FindCallback<AVOFeed>() {
             @Override
             public void done(List<AVOFeed> list, AVException e) {
@@ -79,11 +80,11 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         AVGeoPoint point = new AVGeoPoint();
         point.setLatitude(location.getLatitude());
         point.setLongitude(location.getLongitude());
-        query.whereWithinKilometers("lastLocation", point, 10);
+        query.whereWithinKilometers("lastLocation", point, Config.RADIUS);
         query.limit(100);
         query.include("user");
-        query.whereEqualTo("shareLoc",true);
-        query.whereNotEqualTo("objectId",AVOUser.getCurrentUser().getObjectId());
+        query.whereEqualTo("shareLoc", true);
+        query.whereNotEqualTo("objectId", AVOUser.getCurrentUser().getObjectId());
         query.findInBackground(new FindCallback<AVOUser>() {
             @Override
             public void done(List<AVOUser> list, AVException e) {
@@ -106,7 +107,7 @@ public class MainMapPresenter implements MainMapContract.Presenter {
         point.setLongitude(location.getLongitude());
         query.whereContainedIn("labels", labels);
         query.include("labels");
-        query.whereWithinKilometers("location", point, 10);
+        query.whereWithinKilometers("location", point, 20);
         query.whereEqualTo("isPublic", true);
         query.limit(100);
         query.findInBackground(new FindCallback<AVOFeed>() {

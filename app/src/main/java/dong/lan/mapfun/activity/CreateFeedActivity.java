@@ -110,7 +110,7 @@ public class CreateFeedActivity extends BaseActivity implements TagCloudView.OnT
      * @param labelEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void onPickLabel(PickLabelEvent labelEvent) {
+    public void onPickLabel(PickLabelEvent labelEvent) {
         labels = labelEvent.labels;
         tagCloudView.setData(labels);
         tagCloudView.getAdapter().notifyDataSetChanged();

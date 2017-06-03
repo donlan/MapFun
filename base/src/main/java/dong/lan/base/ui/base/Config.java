@@ -7,6 +7,7 @@ package dong.lan.base.ui.base;
 public final class Config {
 
     public static final String INTENT_USER = "userSeq";
+    public static  int RADIUS = 20;
 
     private Config() {
         //no instance

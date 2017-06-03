@@ -36,8 +36,10 @@ import dong.lan.avoscloud.bean.AVOFeed;
 import dong.lan.avoscloud.bean.AVOLabel;
 import dong.lan.avoscloud.bean.AVOUser;
 import dong.lan.base.ui.BaseActivity;
+import dong.lan.base.ui.base.Config;
 import dong.lan.base.ui.customView.CircleImageView;
 import dong.lan.base.ui.customView.PinCircleImageView;
+import dong.lan.base.utils.SPHelper;
 import dong.lan.library.LabelTextView;
 import dong.lan.map.service.LocationService;
 import dong.lan.map.utils.MapHelper;
@@ -148,6 +150,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         App.myApp().initIM();
 
+        int r = SPHelper.instance().getInt("radius");
+        Config.RADIUS = r == 0 ?10:r;
 
         AVOUser user = AVOUser.getCurrentUser();
         isShare = user.isShareLocation();
@@ -244,6 +248,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.logout:
                 AVOUser.logOut();
+                SPHelper.instance().putInt("radius",10);
                 finish();
                 break;
             case R.id.user_avatar:

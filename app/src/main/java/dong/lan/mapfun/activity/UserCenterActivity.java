@@ -16,6 +16,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
+import com.blankj.ALog;
 import com.bumptech.glide.Glide;
 import com.luck.picture.lib.model.FunctionConfig;
 import com.luck.picture.lib.model.LocalMediaLoader;
@@ -151,6 +152,8 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
                 finish();
                 return;
             }
+            ALog.d(userSeq);
+            ALog.d(user);
             setUpView(user);
         } else if (!TextUtils.isEmpty(objId)) {
             AVQuery<AVOUser> query = new AVQuery<>("MyUser");
@@ -170,14 +173,7 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
                 }
             });
         }
-        AVQuery<AVObject> relationQuery = user.getFriends().getQuery();
-        relationQuery.countInBackground(new CountCallback() {
-            @Override
-            public void done(int i, AVException e) {
-                follower = i;
-                userFollowerTv.setText(follower + " 个关注者");
-            }
-        });
+
 
         FunctionConfig config = new FunctionConfig();
         config.setCompress(true);
@@ -193,6 +189,16 @@ public class UserCenterActivity extends BaseActivity implements BaseItemClickLis
     private FeedsAdapter feedsAdapter;
 
     private void setUpView(AVOUser user) {
+
+        AVQuery<AVObject> relationQuery = user.getFriends().getQuery();
+        relationQuery.countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, AVException e) {
+                follower = i;
+                userFollowerTv.setText(follower + " 个关注者");
+            }
+        });
+
         Glide.with(this).load(user.getAvatar() == null ? "" : user.getAvatar().getUrl())
                 .error(R.drawable.head)
                 .into(avatar);

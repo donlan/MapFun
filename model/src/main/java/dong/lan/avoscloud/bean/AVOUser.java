@@ -37,16 +37,13 @@ public class AVOUser extends AVObject {
 
 
     public AVUser getCreator() {
-        return getAVUser("user");
+        return super.getAVUser("user");
     }
 
     public void setCreator(AVUser user) {
         super.put("user", user);
     }
 
-    public void setCreator(AVOUser user) {
-        super.put("user", user.getCreator());
-    }
 
     public boolean isShareLocation() {
         return getBoolean("shareLoc");
